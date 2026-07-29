@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Singleton row (id is always "singleton") holding global site settings:
+/// title, branding, SEO defaults, navigation and footer content.
+model Site {
+  id             String   @id @default("singleton")
+  title          String   @default("")
+  tagline        String   @default("")
+  logoUrl        String?
+  faviconUrl     String?
+  accentColor    String   @default("#e5e5e5")
+  seoTitle       String?
+  seoDescription String?
+  seoImageUrl    String?
+  navigation     Json     @default("[]")
+  footer         Json     @default("{}")
+  updatedAt      DateTime @updatedAt
+}
+
+/// Ordered content blocks rendered on the homepage. Fixed keys (hero, about,
+/// projects, skills, experience, contact) are managed by dedicated admin
+/// forms; type "custom" rows are free-form blocks an admin can add without
+/// any code changes, which is how new/future sections are supported.
+model Section {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  type      String
+  title     String   @default("")
+  data      Json     @default("{}")
+  order     Int      @default(0)
+  visible   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}
+
+/// Custom standalone pages (e.g. /blog, /uses) built from the same
+/// block-based section model as the homepage.
+model Page {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  title          String
+  seoTitle       String?
+  seoDescription String?
+  published      Boolean  @default(false)
+  sections       Json     @default("[]")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+/// Uploaded images, stored inline as base64 data URIs so the admin panel has
+/// zero external dependencies (no S3/Blob credentials required).
+model MediaAsset {
+  id        String   @id @default(cuid())
+  filename  String
+  mimeType  String
+  size      Int
+  dataUrl   String
+  alt       String   @default("")
+  createdAt DateTime @default(now())
+}
+
+/// Singleton row (id is always "singleton") controlling public visibility of
+/// the site. Only ever written by the private /api/payment endpoint, which
+/// is authenticated separately from the admin panel via API_KEY.
+model PaymentStatus {
+  id        String   @id @default("singleton")
+  isPaid    Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+}
