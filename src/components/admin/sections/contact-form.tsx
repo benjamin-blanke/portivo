@@ -17,7 +17,7 @@ export function ContactForm({ data, onChange }: { data: ContactData; onChange: (
       <Field label="Intro">
         <TextArea rows={2} value={data.intro} onChange={(e) => onChange({ intro: e.target.value })} />
       </Field>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Email">
           <TextInput type="email" value={data.email} onChange={(e) => onChange({ email: e.target.value })} placeholder="you@example.com" />
         </Field>

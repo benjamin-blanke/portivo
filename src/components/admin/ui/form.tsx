@@ -122,8 +122,8 @@ export function SaveBar({
   error?: string | null;
 }) {
   return (
-    <div className="sticky bottom-0 left-0 right-0 z-10 mt-8 flex items-center justify-between rounded-xl border border-neutral-200 bg-white/95 px-4 py-3 shadow-lg backdrop-blur">
-      <div className="text-sm">
+    <div className="sticky bottom-0 left-0 right-0 z-10 mt-8 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white/95 px-4 py-3 shadow-lg backdrop-blur">
+      <div className="min-w-0 flex-1 text-sm">
         {error ? (
           <span className="text-red-600">{error}</span>
         ) : message ? (

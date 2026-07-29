@@ -17,7 +17,7 @@ export function CustomSectionForm({
         <TextArea rows={6} value={data.body} onChange={(e) => onChange({ body: e.target.value })} />
       </Field>
       <ImagePicker label="Image" value={data.imageUrl} onChange={(v) => onChange({ imageUrl: v })} />
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Button label">
           <TextInput value={data.ctaLabel} onChange={(e) => onChange({ ctaLabel: e.target.value })} />
         </Field>

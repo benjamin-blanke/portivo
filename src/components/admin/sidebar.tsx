@@ -28,7 +28,7 @@ const NAV_GROUPS: { title: string; items: { href: string; label: string }[] }[] 
   },
 ];
 
-export function Sidebar() {
+export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -39,10 +39,24 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="flex h-screen w-64 shrink-0 flex-col border-r border-neutral-800 bg-black">
-      <div className="border-b border-neutral-800 px-5 py-5">
-        <p className="text-sm font-semibold text-white">Admin panel</p>
-        <p className="text-xs text-neutral-500">Manage your website</p>
+    <aside
+      className={
+        "fixed inset-y-0 left-0 z-50 flex h-screen w-64 shrink-0 transform flex-col border-r border-neutral-800 bg-black transition-transform duration-200 ease-out md:static md:z-auto md:translate-x-0 " +
+        (open ? "translate-x-0" : "-translate-x-full")
+      }
+    >
+      <div className="flex items-center justify-between border-b border-neutral-800 px-5 py-5">
+        <div>
+          <p className="text-sm font-semibold text-white">Admin panel</p>
+          <p className="text-xs text-neutral-500">Manage your website</p>
+        </div>
+        <button
+          onClick={onClose}
+          className="rounded p-1 text-neutral-400 hover:bg-neutral-900 hover:text-white md:hidden"
+          aria-label="Close menu"
+        >
+          ✕
+        </button>
       </div>
 
       <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-5">
@@ -60,6 +74,7 @@ export function Sidebar() {
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={onClose}
                     className={
                       "block rounded-md px-2.5 py-2 text-sm transition " +
                       (active ? "bg-white text-black font-medium" : "text-neutral-300 hover:bg-neutral-900")
@@ -78,6 +93,7 @@ export function Sidebar() {
         <Link
           href="/"
           target="_blank"
+          onClick={onClose}
           className="block rounded-md px-2.5 py-2 text-sm text-neutral-300 hover:bg-neutral-900"
         >
           View website ↗

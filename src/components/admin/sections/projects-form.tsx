@@ -44,7 +44,7 @@ export function ProjectsForm({ data, onChange }: { data: ProjectsData; onChange:
               <TextArea rows={3} value={item.description} onChange={(e) => update({ description: e.target.value })} />
             </Field>
             <ImagePicker label="Screenshot" value={item.imageUrl} onChange={(v) => update({ imageUrl: v })} />
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label="Live URL">
                 <TextInput value={item.url} onChange={(e) => update({ url: e.target.value })} placeholder="https://…" />
               </Field>

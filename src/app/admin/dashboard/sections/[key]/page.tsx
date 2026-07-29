@@ -102,7 +102,7 @@ export default function SectionEditorPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-xl font-semibold text-neutral-900">{heading}</h1>
           <p className="mt-1 text-sm text-neutral-500">
@@ -110,7 +110,7 @@ export default function SectionEditorPage() {
           </p>
         </div>
         {!section.isFixed ? (
-          <Button variant="danger" onClick={handleDelete}>
+          <Button variant="danger" onClick={handleDelete} className="self-start sm:self-auto">
             Delete section
           </Button>
         ) : null}

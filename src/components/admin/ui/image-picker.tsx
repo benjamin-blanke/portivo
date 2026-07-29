@@ -17,7 +17,7 @@ export function ImagePicker({
 
   return (
     <Field label={label}>
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-dashed border-neutral-300 bg-neutral-50">
           {value ? (
             // eslint-disable-next-line @next/next/no-img-element

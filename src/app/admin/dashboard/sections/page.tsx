@@ -103,74 +103,81 @@ export default function SectionsOverviewPage() {
 
       <div className="mt-6 divide-y divide-neutral-200 rounded-xl border border-neutral-200 bg-white shadow-sm">
         {sections.map((section, index) => (
-          <div key={section.key} className="flex items-center gap-3 px-4 py-3">
-            <div className="flex flex-col">
-              <button
-                onClick={() => move(index, -1)}
-                disabled={index === 0}
-                className="text-neutral-400 hover:text-neutral-800 disabled:opacity-20"
-                aria-label="Move up"
-              >
-                ↑
-              </button>
-              <button
-                onClick={() => move(index, 1)}
-                disabled={index === sections.length - 1}
-                className="text-neutral-400 hover:text-neutral-800 disabled:opacity-20"
-                aria-label="Move down"
-              >
-                ↓
-              </button>
+          <div key={section.key} className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:gap-3">
+            <div className="flex flex-1 items-center gap-3">
+              <div className="flex flex-col">
+                <button
+                  onClick={() => move(index, -1)}
+                  disabled={index === 0}
+                  className="text-neutral-400 hover:text-neutral-800 disabled:opacity-20"
+                  aria-label="Move up"
+                >
+                  ↑
+                </button>
+                <button
+                  onClick={() => move(index, 1)}
+                  disabled={index === sections.length - 1}
+                  className="text-neutral-400 hover:text-neutral-800 disabled:opacity-20"
+                  aria-label="Move down"
+                >
+                  ↓
+                </button>
+              </div>
+
+              <div className="flex-1">
+                <p className="text-sm font-medium text-neutral-900">{section.title || section.key}</p>
+                <p className="text-xs text-neutral-400">{section.isFixed ? "Built-in section" : "Custom section"}</p>
+              </div>
             </div>
 
-            <div className="flex-1">
-              <p className="text-sm font-medium text-neutral-900">{section.title || section.key}</p>
-              <p className="text-xs text-neutral-400">{section.isFixed ? "Built-in section" : "Custom section"}</p>
-            </div>
-
-            <button
-              onClick={() => toggleVisible(section)}
-              disabled={busyKey === section.key}
-              className={
-                "relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors " +
-                (section.visible ? "bg-neutral-900" : "bg-neutral-300")
-              }
-              aria-label="Toggle visibility"
-            >
-              <span
+            <div className="flex items-center gap-2 pl-8 sm:pl-0">
+              <button
+                onClick={() => toggleVisible(section)}
+                disabled={busyKey === section.key}
                 className={
-                  "inline-block h-4.5 w-4.5 transform rounded-full bg-white shadow transition-transform " +
-                  (section.visible ? "translate-x-6" : "translate-x-1")
+                  "relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors " +
+                  (section.visible ? "bg-neutral-900" : "bg-neutral-300")
                 }
-              />
-            </button>
+                aria-label="Toggle visibility"
+              >
+                <span
+                  className={
+                    "inline-block h-4.5 w-4.5 transform rounded-full bg-white shadow transition-transform " +
+                    (section.visible ? "translate-x-6" : "translate-x-1")
+                  }
+                />
+              </button>
 
-            <Link href={`/admin/dashboard/sections/${section.key}`}>
-              <Button variant="secondary">Edit</Button>
-            </Link>
+              <Link href={`/admin/dashboard/sections/${section.key}`}>
+                <Button variant="secondary">Edit</Button>
+              </Link>
 
-            {!section.isFixed ? (
-              <Button variant="ghost" onClick={() => handleDelete(section)}>
-                Delete
-              </Button>
-            ) : null}
+              {!section.isFixed ? (
+                <Button variant="ghost" onClick={() => handleDelete(section)}>
+                  Delete
+                </Button>
+              ) : null}
+            </div>
           </div>
         ))}
       </div>
 
       <div className="mt-6">
         {showAdd ? (
-          <div className="flex items-center gap-2 rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
+          <div className="flex flex-col gap-3 rounded-xl border border-neutral-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center">
             <TextInput
               value={addingTitle}
               onChange={(e) => setAddingTitle(e.target.value)}
               placeholder="Section title, e.g. Testimonials"
               autoFocus
+              className="sm:flex-1"
             />
-            <Button onClick={handleAddCustom}>Create</Button>
-            <Button variant="ghost" onClick={() => setShowAdd(false)}>
-              Cancel
-            </Button>
+            <div className="flex gap-2">
+              <Button onClick={handleAddCustom}>Create</Button>
+              <Button variant="ghost" onClick={() => setShowAdd(false)}>
+                Cancel
+              </Button>
+            </div>
           </div>
         ) : (
           <Button variant="secondary" onClick={() => setShowAdd(true)}>

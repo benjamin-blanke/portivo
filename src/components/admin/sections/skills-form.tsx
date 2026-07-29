@@ -27,7 +27,7 @@ export function SkillsForm({ data, onChange }: { data: SkillsData; onChange: (pa
         emptyLabel="No skills yet."
         renderItem={(item, update) => (
           <>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label="Name">
                 <TextInput value={item.name} onChange={(e) => update({ name: e.target.value })} placeholder="TypeScript" />
               </Field>

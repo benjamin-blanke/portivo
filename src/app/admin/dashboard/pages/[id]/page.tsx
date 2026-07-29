@@ -92,12 +92,12 @@ export default function PageEditorPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-xl font-semibold text-neutral-900">{page.title || "Untitled page"}</h1>
           <p className="mt-1 text-sm text-neutral-500">/{page.slug}</p>
         </div>
-        <Button variant="danger" onClick={handleDelete}>
+        <Button variant="danger" onClick={handleDelete} className="self-start sm:self-auto">
           Delete page
         </Button>
       </div>
@@ -174,7 +174,7 @@ export default function PageEditorPage() {
                         onChange={(e) => updateBlock({ data: { ...item.data, body: e.target.value } })}
                       />
                     </Field>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <Field label="Button label">
                         <TextInput
                           value={(item.data.ctaLabel as string) ?? ""}

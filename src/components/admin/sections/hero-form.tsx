@@ -16,7 +16,7 @@ export function HeroForm({ data, onChange }: { data: HeroData; onChange: (patch:
       <Field label="Subheading">
         <TextArea rows={3} value={data.subheading} onChange={(e) => onChange({ subheading: e.target.value })} />
       </Field>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Primary button label">
           <TextInput value={data.ctaLabel} onChange={(e) => onChange({ ctaLabel: e.target.value })} placeholder="View my work" />
         </Field>
@@ -24,7 +24,7 @@ export function HeroForm({ data, onChange }: { data: HeroData; onChange: (patch:
           <TextInput value={data.ctaUrl} onChange={(e) => onChange({ ctaUrl: e.target.value })} placeholder="#projects" />
         </Field>
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Secondary button label">
           <TextInput value={data.secondaryCtaLabel} onChange={(e) => onChange({ secondaryCtaLabel: e.target.value })} placeholder="Contact me" />
         </Field>

@@ -42,7 +42,7 @@ export function ExperienceForm({
         emptyLabel="No experience yet."
         renderItem={(item, update) => (
           <>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label="Role">
                 <TextInput value={item.role} onChange={(e) => update({ role: e.target.value })} placeholder="Senior Engineer" />
               </Field>
@@ -53,7 +53,7 @@ export function ExperienceForm({
             <Field label="Location">
               <TextInput value={item.location} onChange={(e) => update({ location: e.target.value })} placeholder="Remote" />
             </Field>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label="Start date">
                 <TextInput value={item.startDate} onChange={(e) => update({ startDate: e.target.value })} placeholder="2022" />
               </Field>

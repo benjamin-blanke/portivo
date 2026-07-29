@@ -83,7 +83,7 @@ export default function PagesListPage() {
           <p className="px-4 py-4 text-sm text-neutral-400">No custom pages yet.</p>
         ) : (
           pages.map((page) => (
-            <div key={page.id} className="flex items-center justify-between px-4 py-3">
+            <div key={page.id} className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm font-medium text-neutral-900">{page.title}</p>
                 <p className="text-xs text-neutral-400">
@@ -105,11 +105,13 @@ export default function PagesListPage() {
 
       <div className="mt-6">
         {showCreate ? (
-          <div className="flex items-center gap-2 rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
-            <Field label="Page title">
-              <TextInput value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Uses" autoFocus />
-            </Field>
-            <div className="flex gap-2 pt-6">
+          <div className="flex flex-col gap-3 rounded-xl border border-neutral-200 bg-white p-4 shadow-sm sm:flex-row sm:items-end">
+            <div className="flex-1">
+              <Field label="Page title">
+                <TextInput value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Uses" autoFocus />
+              </Field>
+            </div>
+            <div className="flex gap-2">
               <Button onClick={handleCreate} disabled={creating}>
                 Create
               </Button>
