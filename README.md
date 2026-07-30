@@ -5,7 +5,9 @@ A modern, black, premium developer portfolio. The public site starts completely 
 is managed through a password-protected admin panel at `/admin`, similar to a lightweight WordPress.
 
 A second, completely separate private API lets the site owner remotely enable/disable the public site
-(e.g. for non-payment) using a hardcoded API key. It is never used by the admin panel or the site itself.
+(e.g. for non-payment) using a hardcoded API key. A third API, authenticated with that same key, lets the
+owner disable the site for any other reason with a custom message shown to visitors. Neither is ever used
+by the admin panel or the site itself.
 
 ## Tech stack
 
@@ -49,10 +51,12 @@ A second, completely separate private API lets the site owner remotely enable/di
 - `src/app/(site)` — the public website (homepage + custom pages). Gated by the payment status.
 - `src/app/admin` — the password-protected admin panel.
 - `src/app/api/admin/*` — API routes used only by the admin panel (session-cookie authenticated).
-- `src/app/api/payment` — the private owner-only API (API-key authenticated, see below).
+- `src/app/api/payment` — the private owner-only payment-lock API (API-key authenticated, see below).
+- `src/app/api/lock` — the private owner-only general disable API with a custom reason (API-key
+  authenticated, see below).
 - `prisma/schema.prisma` — data model: `Site` (title/branding/nav/footer/SEO), `Section` (hero/about/
   projects/skills/experience/contact, plus free-form custom sections), `Page` (custom pages), `MediaAsset`
-  (uploaded images), `PaymentStatus`.
+  (uploaded images), `PaymentStatus`, `SiteLock`.
 
 Images are uploaded through the admin panel's media library and stored inline in Postgres as base64 data
 URIs, so there is no dependency on external storage — uploads are capped at 4MB each.
@@ -82,6 +86,31 @@ When the status is `unpaid`, every public route (homepage and custom pages) imme
 "website disabled" page instead of the portfolio. The admin panel at `/admin` keeps working regardless,
 so the site owner (or their client) can still log in — only the public-facing site is affected. This API
 is never called by the admin panel or by the site itself.
+
+## The private site-lock API
+
+`POST /api/lock` (also `GET` to check status) is a second, independent kill switch — same look as the
+payment lock, but for any other reason (maintenance, a dispute, etc.), with a custom message shown to
+visitors. It's authenticated exactly like `/api/payment`, using the same `API_KEY`:
+
+```bash
+# Check current status
+curl -H "x-api-key: $API_KEY" https://your-site.vercel.app/api/lock
+
+# Disable the site with a visible reason
+curl -X POST -H "x-api-key: $API_KEY" -H "Content-Type: application/json" \
+  -d '{"locked":true,"reason":"Undergoing scheduled maintenance, back soon."}' \
+  https://your-site.vercel.app/api/lock
+
+# Re-enable the site
+curl -X POST -H "x-api-key: $API_KEY" -H "Content-Type: application/json" \
+  -d '{"locked":false}' https://your-site.vercel.app/api/lock
+```
+
+`reason` is required when `locked` is `true` (400 otherwise) and is rendered verbatim on the public
+"website disabled" page in place of the default payment message. This lock is independent of the payment
+status — either one alone is enough to take the public site down, and the admin panel is unaffected by
+both.
 
 ## Deploying to Vercel
 

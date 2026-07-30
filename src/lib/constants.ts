@@ -1,5 +1,6 @@
 export const SITE_SINGLETON_ID = "singleton";
 export const PAYMENT_SINGLETON_ID = "singleton";
+export const LOCK_SINGLETON_ID = "singleton";
 
 export type FixedSectionKey =
   | "hero"

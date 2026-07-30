@@ -76,3 +76,14 @@ model PaymentStatus {
   isPaid    Boolean  @default(true)
   updatedAt DateTime @updatedAt
 }
+
+/// Singleton row (id is always "singleton") for manually disabling the site
+/// with a visible reason. Only ever written by the private /api/lock
+/// endpoint, authenticated the same way as /api/payment (API_KEY) but kept
+/// independent of the payment status.
+model SiteLock {
+  id        String   @id @default("singleton")
+  locked    Boolean  @default(false)
+  reason    String   @default("")
+  updatedAt DateTime @updatedAt
+}

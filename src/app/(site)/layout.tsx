@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getSite } from "@/lib/db/site";
 import { isSitePaid } from "@/lib/db/payment";
+import { getSiteLock } from "@/lib/db/lock";
 import { Header } from "@/components/public/header";
 import { Footer } from "@/components/public/footer";
 import { DisabledPage } from "@/components/public/disabled-page";
@@ -8,8 +9,8 @@ import { DisabledPage } from "@/components/public/disabled-page";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const paid = await isSitePaid();
-  if (!paid) {
+  const [paid, lock] = await Promise.all([isSitePaid(), getSiteLock()]);
+  if (!paid || lock.locked) {
     return { title: "Website unavailable", robots: { index: false, follow: false } };
   }
 
@@ -30,7 +31,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
-  const paid = await isSitePaid();
+  const [paid, lock] = await Promise.all([isSitePaid(), getSiteLock()]);
+  if (lock.locked) {
+    return <DisabledPage reason={lock.reason} />;
+  }
   if (!paid) {
     return <DisabledPage />;
   }
